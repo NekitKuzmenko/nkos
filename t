@@ -1,6 +1,6 @@
 as loader.s -o loader.o
 
-ld -Ttext 0x7c00 loader.o -o loader.bin
+ld loader.o -o loader.bin
 
 objcopy --dump-section .text=os.img loader.bin
 

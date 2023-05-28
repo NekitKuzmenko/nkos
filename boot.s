@@ -1,16 +1,6 @@
-.align 8
+.org 0x8000
 
-GDT:
-    null_d: .space 8
-    code_d: 
-    data_d:
-    video_d:
-
-GDT_size: . - GDT
-
-GDTR: 
-    .word GDT_size-1
-    GDT_ptr: .long 0
+.byte 0
 
 boot_entry:
 
@@ -42,12 +32,42 @@ boot_entry:
     or $1, %al
     movl %eax, %cr0
 
-.byte 0x66
-.byte 0xea
+    .byte 0x66
+    .byte 0xea
 
-entry_offset:
-    .long 0
-    .word: code_selector
+    entry_offset: .long 0
+    .word CODE_S
+
+
+.align 8
+
+GDT:
+    null_d: .space 8
+    code_d:
+        .long 0b0000000000001000
+        .byte 0, 0, 0
+        .byte 0b10011010
+        .byte 0b11001000
+        .byte 0
+    data_d:
+        .long 0b0000000000001000
+        .byte 0b00000100, 0b00000100, 0b00000000
+        .byte 0b10010010
+        .byte 0b11001000
+        .byte 0
+    video_d:
+        .long 9
+        .byte 0b00000000, 0b00001000, 0b00000000
+        .byte 0b10010010
+        .byte 0b11001100
+        .byte 0
+
+GDT_size: . - GDT
+
+GDTR: 
+    .word GDT_size-1
+    GDT_ptr: .long 0
+
 
 .code32
 

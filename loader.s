@@ -1,4 +1,5 @@
 .code16
+.org 0x7c00
 
 .text
 
@@ -10,7 +11,7 @@ _start:
     movw %ax, %ds
     movw %ax, %ss
     movw %ax, %es
-    movw $0x7BFC, %sp
+    movw $0x8000, %sp
 
     movb %dl, (disk_id)
 
@@ -56,7 +57,7 @@ boot:
     movb $0, %dh
     movb $2, %cl
     movb (disk_id), %dl
-    movw $0x7E00, %bx
+    movw $0x8000, %bx
 
     int $0x13
 
